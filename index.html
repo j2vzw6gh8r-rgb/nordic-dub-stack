@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#100d0a">
+  <meta name="description" content="Eight Nordic sound systems. Build the stack from the scoops up.">
+  <title>Nordic Dub Stack</title>
+  <link rel="icon" href="./assets/mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+  <script src="./rigs.js?v=2.1" defer></script>
+  <script src="./engine.js" defer></script>
+  <script src="./audio.js" defer></script>
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <audio id="dub-track" src="./assets/soundcheck-dub.mp3" preload="auto" loop></audio>
+  <svg class="icons" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="icon-stack" viewBox="0 0 24 24"><rect x="5" y="2.5" width="14" height="19" rx="2"/><circle cx="12" cy="14.7" r="3.1"/><circle cx="12" cy="7" r="1.25"/></symbol>
+    <symbol id="icon-music" viewBox="0 0 24 24"><path d="M8 17V6l12-3v11M8 8l12-3"/><ellipse cx="5" cy="17.5" rx="3" ry="2.5"/><ellipse cx="17" cy="14.5" rx="3" ry="2.5"/></symbol>
+    <symbol id="icon-sound" viewBox="0 0 24 24"><path d="M11 4 5 9H2v6h3l6 5zM15 8a5 5 0 0 1 0 8m3-11a9 9 0 0 1 0 14"/></symbol>
+    <symbol id="icon-pause" viewBox="0 0 24 24"><path d="M9 5v14m6-14v14"/></symbol>
+    <symbol id="icon-play" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7z" fill="currentColor"/></symbol>
+    <symbol id="icon-siren" viewBox="0 0 24 24"><path d="M5 18h14M8 18v-6a4 4 0 0 1 8 0v6M12 2v3m-8 1 2 2m14-2-2 2M2 20h20"/></symbol>
+    <symbol id="icon-horn" viewBox="0 0 24 24"><path d="M3 9h5l11-5v16L8 15H3zM7 15l2 5h3l-2-4m12-7v6"/></symbol>
+    <symbol id="icon-down" viewBox="0 0 24 24"><path d="M12 3v15m-6-6 6 6 6-6"/></symbol>
+    <symbol id="icon-drop" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M5 20h14"/></symbol>
+    <symbol id="icon-left" viewBox="0 0 24 24"><path d="M20 12H5m6-6-6 6 6 6"/></symbol>
+    <symbol id="icon-right" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+  </svg>
+
+  <header class="masthead">
+    <div class="shell topbar">
+      <a class="brand" href="https://ivahsound.com/" target="_blank" rel="noopener noreferrer"><img src="./assets/ivah-wordmark.png" alt="Ivah Sound"></a>
+      <span class="edition">Sound system arcade</span>
+      <div class="toggles" aria-label="Audio and pause">
+        <button id="music" class="toggle" type="button" aria-pressed="true"><svg aria-hidden="true"><use href="#icon-music"/></svg><span>Music</span></button>
+        <button id="effects" class="toggle" type="button" aria-pressed="true"><svg aria-hidden="true"><use href="#icon-sound"/></svg><span>FX</span></button>
+        <button id="pause" class="toggle square" type="button" aria-label="Pause" title="Pause (P)" disabled><svg aria-hidden="true"><use href="#icon-pause"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="intro" aria-labelledby="title">
+      <div class="eyebrow">Ivah Sound presents <span></span> Nordic edition</div>
+      <div class="title-line">
+        <h1 id="title">Nordic <span>Dub Stack</span></h1>
+        <p>Eight sounds. One session. <br>Build it from the scoops up.</p>
+      </div>
+    </section>
+
+    <div class="arcade">
+      <section class="board-panel panel" aria-label="Stacking stage">
+        <div class="board-header">
+          <div class="stage-meta">
+            <div class="board-title"><span id="board-led" class="signal"></span><span id="board-state">SOUNDCHECK</span></div>
+            <div id="tempo" class="tempo">TEMPO 1</div>
+          </div>
+          <div class="board-meters">
+            <div><span>Score</span><strong id="score">0</strong></div>
+            <div><span>Best</span><strong id="best">0</strong></div>
+            <div><span>Chances</span><div id="lives" class="lives" aria-label="3 chances left"><i></i><i></i><i></i></div></div>
+            <div class="combo"><span>Combo</span><strong id="combo">—</strong></div>
+          </div>
+        </div>
+        <div class="session-strip">
+          <p id="instruction">Take a look at the rig, then build it one box at a time.</p>
+          <button id="primary" class="primary" type="button"><svg aria-hidden="true"><use href="#icon-play"/></svg><span>String up the sound</span></button>
+        </div>
+        <div class="board-body">
+          <canvas id="board" tabindex="-1" width="680" height="620" aria-label="Stage with falling speaker cabinets"></canvas>
+        </div>
+        <div class="touch-controls" aria-label="Game controls">
+          <button data-control="left" type="button" aria-label="Move left"><svg aria-hidden="true"><use href="#icon-left"/></svg></button>
+          <button data-control="down" type="button" aria-label="Lower"><svg aria-hidden="true"><use href="#icon-down"/></svg></button>
+          <button data-control="right" type="button" aria-label="Move right"><svg aria-hidden="true"><use href="#icon-right"/></svg></button>
+          <button data-control="drop" type="button"><svg aria-hidden="true"><use href="#icon-drop"/></svg> Drop</button>
+          <button class="touch-fx" data-effect="siren" type="button" aria-label="Dub siren"><svg aria-hidden="true"><use href="#icon-siren"/></svg></button>
+          <button class="touch-fx" data-effect="horn" type="button" aria-label="Air horn"><svg aria-hidden="true"><use href="#icon-horn"/></svg></button>
+        </div>
+        <div class="keyboard-help">
+          <span><kbd>←</kbd><kbd>→</kbd> Move</span><span><kbd>↓</kbd> Lower</span><span><kbd>Space</kbd> Drop</span><span><kbd>P</kbd> Pause</span>
+        </div>
+      </section>
+
+      <aside class="side" aria-label="Rig reference, next box and sound effects">
+        <section class="rig-card panel" aria-labelledby="rig-name">
+          <div class="card-heading"><span class="kicker">The rig</span><span id="rig-number" class="serial">01 / 08</span></div>
+          <div class="rig-art">
+            <span id="rig-code" class="country-tag">FIN</span>
+            <canvas id="rig-preview" width="480" height="450" aria-label="Illustration of the finished speaker stack"></canvas>
+          </div>
+          <div class="rig-copy">
+            <div id="rig-country" class="kicker country">Finland</div>
+            <h2 id="rig-name">Ivah Sound</h2>
+            <p id="rig-note">Polar Bear Scoops at the foundation. Orange horns and hand-built birch from the south of Finland.</p>
+          </div>
+          <div id="rig-path" class="rig-path" aria-label="Rig order"></div>
+        </section>
+        <section class="next-card panel" aria-labelledby="next-title">
+          <div class="card-heading"><span id="next-title" class="kicker">Next box</span><span class="next-arrow" aria-hidden="true">↘</span></div>
+          <div class="next-content">
+            <canvas id="next" width="200" height="150" aria-hidden="true"></canvas>
+            <strong id="next-name">Polar Bear Scoop</strong>
+          </div>
+        </section>
+        <section class="fx-card panel" aria-labelledby="fx-title">
+          <div class="card-heading"><span id="fx-title" class="kicker">Dub box</span><span class="vu" aria-hidden="true"><i></i><i></i><i></i><i></i></span></div>
+          <div class="fx-buttons">
+            <button id="siren" data-effect="siren" class="fx-button siren" type="button"><svg aria-hidden="true"><use href="#icon-siren"/></svg><span>Dub siren</span><kbd>S</kbd></button>
+            <button id="horn" data-effect="horn" class="fx-button horn" type="button"><svg aria-hidden="true"><use href="#icon-horn"/></svg><span>Air horn</span><kbd>H</kbd></button>
+          </div>
+        </section>
+      </aside>
+    </div>
+
+    <footer class="footer">
+      <div class="track"><span class="record" aria-hidden="true"></span> Soundcheck Dub <span>· Original mix</span></div>
+      <span>Unity · Peace · Love</span>
+    </footer>
+    <div id="announcement" class="sr-only" role="status" aria-live="polite"></div>
+  </main>
+</body>
+</html>
