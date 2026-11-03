@@ -388,3 +388,95 @@ body { background: radial-gradient(ellipse at 12% 0%, #382014 0, transparent 48%
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* Desktop fit: use the monitor height for the stage and compact the right rail. */
+@media (min-width: 651px) {
+  .shell { width: min(1320px, calc(100% - 36px)); }
+  .arcade { align-items: stretch; }
+  .side { min-width: 0; align-content: start; }
+  .side > .panel { min-width: 0; }
+  #board { width: min(100%, 660px, max(300px, calc((100dvh - 350px) * 680 / 620))); }
+  .rig-art { display: grid; place-items: center; }
+  .rig-art canvas { width: auto; height: min(27dvh, 270px); aspect-ratio: 480 / 450; }
+  .footer { padding-block: 10px 14px; }
+}
+
+@media (min-width: 651px) and (max-height: 900px) {
+  .shell { width: min(1320px, calc(100% - 30px)); }
+  .topbar { min-height: 46px; }
+  .brand img { height: 23px; }
+  .intro { padding: 8px 0 9px; }
+  .eyebrow { font-size: 11px; }
+  .title-line { margin-top: 4px; }
+  h1 { font-size: clamp(44px, 6.2vw, 74px); }
+  .title-line p { font-size: 13px; }
+  .arcade { grid-template-columns: minmax(0, 2.45fr) minmax(245px, 1fr); gap: 12px; }
+  .side { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .rig-card { grid-column: 1 / -1; grid-row: 1; }
+  .next-card { grid-column: 2; grid-row: 2; }
+  .preamp-card { grid-column: 1; grid-row: 2; }
+  .fx-card { grid-column: 1 / -1; grid-row: 3; }
+  .rig-art canvas { height: min(20dvh, 178px); }
+  .rig-copy { padding: 7px 10px; }
+  .rig-copy p { margin-top: 3px; font-size: 12px; line-height: 1.22; }
+  .rig-path { padding-bottom: 8px; }
+  .board-header { min-height: 44px; padding: 5px 11px; }
+  .board-meters { gap: clamp(9px, 2vw, 22px); }
+  .board-meters strong { font-size: 22px; }
+  .session-strip { min-height: 40px; padding: 4px 11px; }
+  .session-strip p { font-size: 12px; }
+  .primary { min-height: 31px; font-size: 13px; }
+  .keyboard-help { min-height: 30px; padding: 4px 8px; gap: 10px; font-size: 11px; }
+  .preamp-card .card-heading { min-height: 32px; }
+  .preamp-status { display: none; }
+  .preamp-face { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 6px; }
+  .preamp-band { min-height: 51px; display: grid; grid-template-columns: 1fr auto; justify-items: start; column-gap: 3px; padding: 3px 6px; }
+  .preamp-band::before, .preamp-band::after { top: 4px; width: 3px; height: 3px; }
+  .preamp-band::before { left: 3px; }
+  .preamp-band::after { right: 3px; }
+  .preamp-band strong { grid-column: 1; grid-row: 1; font-size: 10px; }
+  .preamp-band > span { grid-column: 1; grid-row: 2; font-size: 8px; }
+  .band-lamps { grid-column: 2; grid-row: 1 / span 2; gap: 2px; }
+  .band-lamps i { width: 4px; }
+  .preamp-readout { min-height: 24px; padding: 0 7px 5px; font-size: 9px; }
+  .preamp-mark { font-size: 8px; }
+  .next-card .card-heading { min-height: 32px; }
+  .next-content { min-height: 60px; padding: 2px 7px; gap: 5px; }
+  .next-content canvas { width: 60px; }
+  .next-content strong { font-size: 12px; line-height: 1.12; }
+  .fx-card .card-heading { min-height: 32px; }
+  .fx-buttons { padding: 5px; gap: 6px; }
+  .fx-button { min-height: 46px; padding: 4px 7px; }
+  .fx-icon { width: 29px; height: 29px; flex-basis: 29px; }
+  .fx-icon svg { width: 16px; height: 16px; }
+  .footer { padding-block: 7px 9px; }
+}
+
+@media (min-width: 651px) and (max-height: 740px) {
+  .topbar { min-height: 40px; }
+  .brand img { height: 20px; }
+  .intro { padding: 5px 0 6px; }
+  .eyebrow { font-size: 9px; }
+  .title-line p { display: none; }
+  h1 { font-size: clamp(39px, 5.5vw, 60px); }
+  .arcade { grid-template-columns: minmax(0, 2.25fr) minmax(225px, 1fr); gap: 9px; }
+  #board { width: min(100%, 660px, max(285px, calc((100dvh - 315px) * 680 / 620))); }
+  .board-header { min-height: 39px; padding: 4px 8px; }
+  .board-meters { gap: 10px; }
+  .board-meters strong { font-size: 19px; }
+  .stage-meta { gap: 1px; }
+  .tempo { font-size: 9px; }
+  .session-strip { min-height: 35px; }
+  .session-strip p { font-size: 10px; }
+  .primary { min-height: 28px; padding-inline: 7px; font-size: 11px; }
+  .keyboard-help { min-height: 25px; padding: 3px 6px; gap: 7px; font-size: 10px; }
+  .keyboard-help kbd { font-size: 10px; }
+  .rig-art canvas { height: max(112px, 18dvh); max-height: 138px; }
+  .rig-copy p { display: none; }
+  .rig-copy { padding-block: 5px; }
+  .rig-path { padding-bottom: 6px; }
+  .preamp-band { min-height: 43px; }
+  .fx-button { min-height: 40px; }
+  .fx-label small, .fx-button kbd { display: none; }
+  .footer { display: none; }
+}
