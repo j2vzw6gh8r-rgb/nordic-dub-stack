@@ -40,6 +40,7 @@
   let repeatDelay;
   let repeatTimer;
   let touched = null;
+  let horizontalMotion = null;
 
   function fittedSize(sourceWidth, sourceHeight, maxWidth, maxHeight) {
     const scale = Math.min(maxWidth / sourceWidth, maxHeight / sourceHeight);
@@ -142,6 +143,25 @@
     return start + distance * y / target;
   }
 
+  function displayedColumn(piece, now) {
+    if (!horizontalMotion || horizontalMotion.piece !== piece) return piece.x;
+    const progress = Math.min(1, (now - horizontalMotion.start) / horizontalMotion.duration);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    if (progress >= 1) horizontalMotion = null;
+    return horizontalMotion ? horizontalMotion.from + (horizontalMotion.to - horizontalMotion.from) * eased : piece.x;
+  }
+
+  function displayedFall(piece, now) {
+    const nextRow = piece.y + 1;
+    const target = ROWS - 1 - game.row;
+    const canFall = !game.collides(piece.x, nextRow);
+    const reachesBase = nextRow === ROWS && piece.y < target;
+    if (!canFall && !reachesBase) return piece.y;
+    const progress = Math.min(1, Math.max(0, (now - lastDrop) / game.speed));
+    const eased = progress * progress * (3 - 2 * progress);
+    return piece.y + eased;
+  }
+
   function stageX(piece, col, tier) {
     const { slots, pitch } = layout.tiers[tier];
     let anchor = slots[0];
@@ -198,7 +218,7 @@
     if (game.active && game.mode !== 'lost') {
       const piece = game.active;
       const height = piece.rect[3] * layout.scale;
-      stagePiece(piece, stageX(piece, piece.x, game.row), activeBottom(piece.y, height), true);
+      stagePiece(piece, stageX(piece, displayedColumn(piece, now), game.row), activeBottom(displayedFall(piece, now), height), true);
     }
 
     particles = particles.filter(p => now - p.start < p.duration);
@@ -370,7 +390,7 @@
     if (name === 'siren' || name === 'horn') {
       const pads = document.querySelectorAll(`[data-effect="${name}"]`);
       pads.forEach(button => button.classList.add('fired'));
-      setTimeout(() => pads.forEach(button => button.classList.remove('fired')), 250);
+      setTimeout(() => pads.forEach(button => button.classList.remove('fired')), 680);
     }
   }
 
@@ -409,6 +429,7 @@
     if (game.mode !== 'playing') return;
     const { active, row } = game;
     handleResult(game.step(hard), active, row);
+    if (game.active !== active) horizontalMotion = null;
     lastDrop = performance.now();
     dirty = true;
   }
@@ -416,7 +437,11 @@
   function control(action) {
     if (game.mode !== 'playing') return;
     if (action === 'left' || action === 'right') {
+      const piece = game.active;
+      const oldX = piece?.x;
+      const from = piece ? displayedColumn(piece, performance.now()) : 0;
       game.move(action === 'left' ? -1 : 1);
+      if (piece && piece.x !== oldX) horizontalMotion = { piece, from, to: piece.x, start: performance.now(), duration: 105 };
       dirty = true;
     } else {
       drop(action === 'drop');
@@ -425,7 +450,7 @@
 
   function frame(now) {
     if (game.mode === 'playing' && now - lastDrop >= game.speed) drop();
-    if (dirty || particles.length) {
+    if (dirty || particles.length || game.mode === 'playing') {
       drawBoard(now);
       dirty = false;
     }

@@ -190,3 +190,201 @@ kbd { display: inline-block; min-width: 17px; padding: 1px 4px; border: 1px soli
   .board-meters .combo { display: none; }
   .board-meters { gap: 8px; }
 }
+
+/* Version 2.3: a little more cabinet warmth, calmer spacing, and touch-first layouts. */
+:root {
+  --line: #60442e;
+  --panel: #21170f;
+  --orange: #ee7b2e;
+  --light-orange: #ffc17e;
+}
+body { background: radial-gradient(ellipse at 12% 0%, #382014 0, transparent 48%), radial-gradient(ellipse at 92% 30%, #21140d 0, transparent 42%), #100d0a; }
+.shell { width: min(1320px, calc(100% - 48px)); }
+.masthead { box-shadow: 0 5px 20px #0005; }
+.panel { border-radius: 5px; box-shadow: 0 12px 28px #0002, inset 0 1px #ffffff08; }
+.board-panel { box-shadow: 0 18px 42px #0004, inset 0 1px #ffffff08; }
+.arcade { grid-template-columns: minmax(0, 2.45fr) minmax(250px, 1fr); gap: 16px; }
+.board-panel, .rig-card, .next-card, .preamp-card, .fx-card { transition: border-color .25s ease, box-shadow .25s ease; }
+.primary, .toggle, .touch-controls button, .fx-button { transition: transform .14s ease, background-color .18s ease, border-color .18s ease, color .18s ease, box-shadow .18s ease; }
+.primary:active, .toggle:active, .touch-controls button:active { transform: translateY(1px) scale(.985); }
+.signal:not(.off) { animation: signal-pulse 1.8s ease-in-out infinite; }
+@keyframes signal-pulse { 50% { box-shadow: 0 0 13px #e97421aa; } }
+.board-body { background: radial-gradient(ellipse at 50% 32%, #24160f, #130d09 78%); }
+.rig-art { background: radial-gradient(ellipse at 48% 43%, #fff0d3 0%, #d6b38b 100%); }
+.rig-art::before { inset: 7px; border-color: #73503188; }
+.rig-path i { border-radius: 3px; transition: background .3s ease, box-shadow .3s ease; }
+.rig-path .current { box-shadow: 0 0 8px color-mix(in srgb, var(--orange) 65%, transparent); }
+
+/* A warm, rack-mounted crossover with wood cheeks, metal faceplate and live lamps. */
+.preamp-card { border: 1px solid #765231; border-top: 2px solid #d19550; background: #17120d; box-shadow: inset 0 1px #f4d2a016, 0 8px 20px #0003; }
+.preamp-card .card-heading { background: linear-gradient(90deg, #342314, #21170f 24%, #21170f 76%, #342314); }
+.preamp-status { color: #d6a565; text-shadow: 0 0 9px #d7974660; text-transform: uppercase; }
+.preamp-face { position: relative; gap: 6px; padding: 11px 10px 9px; border-top: 1px solid #8c613b; border-bottom: 1px solid #6d4c2e; background: linear-gradient(180deg, #49321f 0, #382616 8%, #251a11 12%, #1a130c 100%); box-shadow: inset 0 2px 8px #0008; }
+.preamp-band { position: relative; min-height: 80px; overflow: hidden; border-color: #60452d; background: linear-gradient(180deg, #16130f, #100d09); box-shadow: inset 0 1px #ffffff09, inset 0 -8px 14px #0006; }
+.preamp-band::before, .preamp-band::after { position: absolute; top: 5px; width: 4px; height: 4px; content: ""; border: 1px solid #806141; border-radius: 50%; background: #21180f; }
+.preamp-band::before { left: 5px; }
+.preamp-band::after { right: 5px; }
+.preamp-band strong { margin-top: 1px; color: #c5a078; font-size: 12px; text-shadow: 0 1px #000; }
+.preamp-band > span { font-size: 9px; letter-spacing: .025em; }
+.band-lamps { height: 15px; gap: 3px; }
+.band-lamps i { position: relative; width: 5px; height: 6px; border-radius: 50% 50% 2px 2px; background: #4c3925; box-shadow: inset 0 -1px 2px #000b, 0 0 1px #000; }
+.band-lamps i:nth-child(2), .band-lamps i:nth-child(4) { height: 9px; }
+.band-lamps i:nth-child(3) { height: 12px; }
+.preamp-band.active { border-color: #95663b; background: linear-gradient(180deg, #302313, #17110b); }
+.preamp-band.active strong { color: #ffe1ad; }
+.preamp-band.active .band-lamps i { background: #e0a34f; box-shadow: 0 0 7px #ffbd5b99, inset 0 -1px 1px #75420f; }
+.preamp-band.current { border-color: #efbd70; box-shadow: 0 0 10px #e8a94b40, inset 0 0 12px #e8a94b13; }
+.preamp-readout { min-height: 30px; padding: 1px 10px 8px; background: linear-gradient(180deg, #1a130d, #100c08); color: #e5bd87; }
+.preamp-indicator { animation: signal-pulse 1s ease-in-out infinite; }
+.preamp-mark { letter-spacing: .12em; }
+
+/* Dub siren and air horn look and feel like real performance controls. */
+.fx-card { border-color: #63442e; border-top: 2px solid #a86637; }
+.fx-card .card-heading { background: linear-gradient(90deg, #302015, #21170f); }
+.fx-buttons { gap: 8px; padding: 9px; }
+.fx-button { min-height: 68px; gap: 8px; padding: 7px 8px; border-color: #7c5335; border-radius: 4px; background: linear-gradient(145deg, #4a3020, #24170f 78%); box-shadow: inset 0 1px #ffffff13, 0 3px 6px #0005; }
+.fx-button:hover { border-color: #e2934e; box-shadow: inset 0 1px #ffffff1c, 0 0 12px #da783133; }
+.fx-icon { width: 36px; height: 36px; flex-basis: 36px; border-color: #c08b51; background: radial-gradient(circle at 35% 30%, #50351f, #1b120b 70%); box-shadow: inset 0 1px #ffffff21, 0 0 7px #0008; }
+.fx-icon svg { width: 19px; height: 19px; }
+.fx-label strong { color: #ffe0b7; font-size: 12px; }
+.fx-label small { color: #c59a71; }
+.fx-button.fired .fx-icon { background: radial-gradient(circle at 35% 30%, #ffbd6e, #a44f24 75%); box-shadow: 0 0 15px #f59b4b99; }
+.fx-button.siren.fired .fx-icon svg { animation: siren-sweep .56s ease-in-out infinite alternate; }
+.fx-button.horn.fired .fx-icon svg { animation: horn-kick .18s ease-in-out 2 alternate; }
+@keyframes siren-sweep { to { transform: rotate(32deg) scale(1.08); } }
+@keyframes horn-kick { to { transform: translateX(2px) scale(1.12); } }
+.vu i { border-radius: 2px 2px 0 0; animation: vu-dance .52s ease-in-out infinite alternate; }
+.vu i:nth-child(2) { animation-delay: .13s; }
+.vu i:nth-child(3) { animation-delay: .25s; }
+.vu i:nth-child(4) { animation-delay: .37s; }
+@keyframes vu-dance { to { transform: scaleY(.4); transform-origin: bottom; filter: brightness(1.4); } }
+.footer { gap: 12px 20px; padding-top: 18px; }
+.track { min-width: 0; }
+.track-title { line-height: 1.4; }
+
+@media (max-width: 900px) {
+  .shell { width: calc(100% - 30px); }
+  .arcade { grid-template-columns: minmax(0, 2.15fr) minmax(230px, 1fr); gap: 12px; }
+  .board-meters { gap: clamp(8px, 2vw, 18px); }
+}
+
+@media (max-width: 650px) {
+  .shell { width: min(520px, calc(100% - 20px)); }
+  .topbar { min-height: 48px; }
+  .brand img { height: 22px; }
+  .toggles { gap: 4px; }
+  .toggle { min-height: 32px; padding-inline: 8px; }
+  .intro { padding: 15px 0 10px; }
+  .eyebrow { font-size: 10px; }
+  .title-line { margin-top: 7px; }
+  h1 { font-size: clamp(39px, 11vw, 58px); }
+  .title-line p { margin-top: 6px; font-size: 13px; }
+  .arcade { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .board-header { min-height: 50px; padding: 6px 8px; gap: 5px; }
+  .board-title { font-size: 10px; }
+  .tempo { padding-left: 7px; font-size: 9px; }
+  .board-meters { gap: clamp(7px, 3vw, 15px); }
+  .board-meters > div { min-height: 31px; }
+  .board-meters span { font-size: 9px; }
+  .board-meters strong { font-size: 21px; }
+  .lives { height: 21px; }
+  .session-strip { min-height: 45px; padding: 5px 8px; }
+  .session-strip p { min-width: 0; font-size: 12px; }
+  .primary { min-height: 35px; padding-inline: 8px; font-size: 12px; }
+  #board { width: min(100%, calc(58dvh * 680 / 620)); max-width: 100%; }
+  .touch-controls { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 5px; padding: 7px; }
+  .touch-controls button { min-width: 0; min-height: 42px; border-radius: 4px; }
+  .touch-controls button[data-control="drop"] { grid-column: span 3; }
+  .touch-controls button.touch-fx { grid-column: span 3; min-height: 40px; gap: 7px; color: #ffd19e; }
+  .touch-controls button.touch-fx svg { width: 18px; height: 18px; }
+  .touch-controls button.touch-fx span { font: 600 12px/1 var(--cond); letter-spacing: .08em; text-transform: uppercase; }
+  .keyboard-help { display: none; }
+  .side { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .rig-card { display: grid; grid-template-columns: minmax(118px, .85fr) minmax(0, 1.15fr); grid-template-rows: 36px auto 22px; grid-column: 1 / -1; grid-row: auto; }
+  .rig-card > .card-heading { grid-column: 1 / -1; grid-row: 1; }
+  .rig-art { grid-column: 1; grid-row: 2; align-self: stretch; border-right: 1px solid var(--line); border-bottom: 0; }
+  .rig-art canvas { height: 100%; min-height: 142px; object-fit: contain; }
+  .rig-copy { grid-column: 2; grid-row: 2; align-self: center; padding: 9px 10px; }
+  .rig-copy p { font-size: 12px; }
+  .country-tag { top: 8px; left: 8px; font-size: 9px; }
+  .rig-path { grid-column: 1 / -1; grid-row: 3; align-self: end; padding: 7px 9px 9px; }
+  .next-card { grid-column: 1 / -1; }
+  .next-content { min-height: 66px; }
+  .preamp-card, .fx-card { grid-column: 1 / -1; }
+  .preamp-face { gap: 6px; padding: 10px 8px 8px; }
+  .preamp-band { min-height: 73px; }
+  .preamp-band strong { font-size: 11px; }
+  .fx-buttons { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fx-button { min-height: 62px; }
+  .footer { padding: 11px 1px 18px; font-size: 10px; }
+  .track { align-items: flex-start; }
+  .track-title { max-width: 290px; font-size: 10px; letter-spacing: .04em; }
+}
+
+@media (max-width: 380px) {
+  .shell { width: calc(100% - 14px); }
+  .edition { display: none; }
+  .toggle { padding-inline: 6px; font-size: 11px; }
+  .board-meters .combo { display: none; }
+  .board-meters { gap: 12px; }
+  .session-strip { gap: 5px; }
+  .session-strip p { font-size: 11px; }
+  .primary { padding-inline: 6px; font-size: 11px; }
+  .touch-controls { gap: 4px; }
+  .touch-controls button { min-height: 39px; }
+  .rig-card { grid-template-columns: minmax(105px, .78fr) minmax(0, 1.22fr); }
+  .rig-copy p { font-size: 11px; }
+  .preamp-band > span { font-size: 8px; }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .touch-controls { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 5px; padding: 7px; }
+  .touch-controls button { min-width: 0; min-height: 42px; border-radius: 4px; }
+  .touch-controls button[data-control="drop"] { grid-column: span 3; }
+  .touch-controls button.touch-fx { grid-column: span 3; min-height: 40px; gap: 7px; color: #ffd19e; }
+  .touch-controls button.touch-fx span { font: 600 12px/1 var(--cond); letter-spacing: .08em; text-transform: uppercase; }
+  .keyboard-help { display: none; }
+}
+
+@media (hover: none) and (pointer: coarse) and (orientation: landscape) and (max-height: 520px) {
+  .shell { width: calc(100% - 18px); }
+  .topbar { min-height: 39px; }
+  .brand img { height: 20px; }
+  .intro { padding: 7px 0 8px; }
+  .eyebrow { font-size: 9px; }
+  .title-line { margin-top: 3px; }
+  h1 { font-size: clamp(35px, 6vw, 48px); }
+  .title-line p { display: none; }
+  .arcade { grid-template-columns: minmax(0, 1.65fr) minmax(255px, 1fr); gap: 8px; }
+  .board-header { min-height: 39px; }
+  .session-strip { min-height: 37px; }
+  .session-strip p { font-size: 10px; }
+  .primary { min-height: 29px; font-size: 10px; }
+  #board { width: min(100%, calc((100dvh - 145px) * 680 / 620)); }
+  .touch-controls { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 3px; padding: 4px; }
+  .touch-controls button { min-height: 34px; }
+  .touch-controls button.touch-fx { grid-column: span 1; min-height: 34px; }
+  .touch-controls button.touch-fx span { display: none; }
+  .side { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+  .rig-card { grid-column: 1 / -1; grid-template-columns: 110px minmax(0, 1fr); grid-template-rows: 30px auto 15px; }
+  .rig-art canvas { min-height: 104px; }
+  .rig-copy { padding: 5px 8px; }
+  .rig-copy p { font-size: 10px; }
+  .rig-path { padding: 4px 8px 6px; }
+  .next-card { grid-column: 1; }
+  .preamp-card { grid-column: 2; grid-row: 2; }
+  .preamp-face { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3px; padding: 5px; }
+  .preamp-band { min-height: 43px; display: grid; grid-template-columns: 1fr auto; justify-items: start; column-gap: 4px; padding: 3px 5px; }
+  .preamp-band::before, .preamp-band::after { display: none; }
+  .preamp-band strong { grid-column: 1; grid-row: 1; font-size: 9px; }
+  .preamp-band > span { grid-column: 1; grid-row: 2; font-size: 8px; }
+  .band-lamps { grid-column: 2; grid-row: 1 / span 2; }
+  .fx-card { grid-column: 1 / -1; }
+  .fx-buttons { padding: 5px; gap: 5px; }
+  .fx-button { min-height: 41px; }
+  .footer { padding: 7px 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}

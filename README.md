@@ -1,6 +1,6 @@
-# Nordic Dub Stack 2.2
+# Nordic Dub Stack 2.3
 
-Eight Nordic sound systems, one cabinet at a time. Build each stack from the bass cabinets up, with a four-way preamp that opens the music bands as correctly placed cabinets are added.
+Eight Nordic sound systems, one cabinet at a time. Build each stack from the bass cabinets up, with a four-way preamp that opens the music bands as correctly placed cabinets are added. Version 2.3 refines the mobile layout, adds smoother cabinet movement, and gives the preamp and effects controls a warm sound-system rack look.
 
 ## Play
 
