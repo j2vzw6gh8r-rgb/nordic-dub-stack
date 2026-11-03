@@ -94,22 +94,53 @@ h2 { margin: 3px 0 2px; font: 400 clamp(25px, 3.3vw, 38px)/.99 var(--display); }
 .next-content { min-height: 76px; display: flex; gap: 8px; align-items: center; padding: 3px 11px; }
 .next-content canvas { width: 85px; height: auto; aspect-ratio: 4 / 3; }
 .next-content strong { font-size: 15px; font-weight: 600; }
+.preamp-card { border-top: 2px solid #bd8b52; }
+.preamp-status { color: #8c7969; font: 600 10px/1 var(--cond); letter-spacing: .12em; }
+.preamp-face { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; padding: 10px 9px 8px; background: linear-gradient(180deg, #21180f, #130f0b); }
+.preamp-band { min-width: 0; min-height: 73px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; border: 1px solid #493725; border-radius: 2px; background: linear-gradient(180deg, #1a1711, #100d09); color: #8c7969; transition: border-color .22s, color .22s, background .22s; }
+.preamp-band strong { font: 600 12px/1 var(--cond); letter-spacing: .13em; }
+.preamp-band > span { font: 600 9px/1 var(--cond); color: #82705f; white-space: nowrap; }
+.band-lamps { height: 14px; display: flex; align-items: end; gap: 2px; }
+.band-lamps i { width: 4px; height: 5px; border-radius: 1px; background: #473b2b; box-shadow: inset 0 0 1px #080604; }
+.band-lamps i:nth-child(2), .band-lamps i:nth-child(4) { height: 8px; }
+.band-lamps i:nth-child(3) { height: 11px; }
+.preamp-band.active { color: #ffe2aa; border-color: #a7753b; background: linear-gradient(180deg, #322313, #1a120b); }
+.preamp-band.active > span { color: #d5ac75; }
+.preamp-band.active .band-lamps i { background: #d39745; box-shadow: 0 0 6px #e4a64f88; animation: lamp-pulse 1.25s ease-in-out infinite alternate; }
+.preamp-band.active .band-lamps i:nth-child(2) { animation-delay: .12s; }
+.preamp-band.active .band-lamps i:nth-child(3) { animation-delay: .24s; }
+.preamp-band.active .band-lamps i:nth-child(4) { animation-delay: .36s; }
+.preamp-band.active .band-lamps i:nth-child(5) { animation-delay: .48s; }
+.preamp-band.current { border-color: #ffd17f; box-shadow: 0 0 13px #e8a94b35, inset 0 0 12px #e8a94b12; }
+.preamp-band.current .band-lamps i { background: #ffce70; box-shadow: 0 0 8px #ffbb55; animation-duration: .56s; }
+@keyframes lamp-pulse { from { opacity: .52; } to { opacity: 1; } }
+.preamp-readout { display: flex; min-height: 26px; align-items: center; gap: 6px; padding: 0 10px 8px; background: #130f0b; color: #c3a17e; font: 600 10px/1 var(--cond); letter-spacing: .08em; text-transform: uppercase; }
+.preamp-indicator { width: 6px; height: 6px; flex: 0 0 6px; border-radius: 50%; background: #d39745; box-shadow: 0 0 7px #d3974588; }
+.preamp-mark { margin-left: auto; color: #6e5843; font-size: 9px; white-space: nowrap; }
 .vu { display: flex; gap: 2px; align-items: end; }
 .vu i { width: 3px; height: 5px; background: #aa6a44; }
 .vu i:nth-child(2) { height: 8px; }
 .vu i:nth-child(3) { height: 11px; }
 .vu i:nth-child(4) { height: 14px; background: var(--orange); }
-.fx-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 8px; }
-.fx-button { display: flex; justify-content: center; align-items: center; min-height: 41px; padding: 4px 6px; gap: 5px; color: #f3c69e; border: 1px solid #6e4835; border-radius: 2px; background: #36251b; font-size: 13px; font-weight: 600; white-space: nowrap; }
-.fx-button svg { flex: 0 0 15px; width: 15px; height: 15px; }
-.fx-button.fired, .touch-fx.fired { background: #a14c25; color: #fff4e6; }
+.fx-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; padding: 8px; }
+.fx-button { display: flex; position: relative; justify-content: flex-start; align-items: center; min-height: 62px; padding: 7px 6px; gap: 5px; color: #f3c69e; border: 1px solid #6e4835; border-radius: 3px; background: linear-gradient(145deg, #3b281c, #251911); font-size: 13px; font-weight: 600; white-space: nowrap; transition: background .15s, transform .15s, box-shadow .15s; }
+.fx-button:hover { background: linear-gradient(145deg, #56341f, #342015); }
+.fx-button:active { transform: translateY(1px); }
+.fx-icon { display: grid; width: 31px; height: 31px; flex: 0 0 31px; place-items: center; border: 1px solid #99643d; border-radius: 50%; background: #1b120c; color: #ffb36f; }
+.fx-icon svg { width: 17px; height: 17px; }
+.fx-label { display: grid; gap: 3px; text-align: left; }
+.fx-label strong { font-size: 11px; line-height: 1; }
+.fx-label small { color: #b08b6e; font: 600 9px/1 var(--cond); letter-spacing: .08em; text-transform: uppercase; }
+.fx-button kbd { margin-left: auto; align-self: start; min-width: 15px; padding: 0 3px; font-size: 10px; color: #c7a68a; }
+.fx-button.fired, .touch-fx.fired { background: linear-gradient(145deg, #a14c25, #63311d); color: #fff4e6; box-shadow: inset 0 0 0 1px #f5ad74, 0 0 14px #df753455; }
+.fx-button.fired .fx-icon { color: #fff0cc; border-color: #ffd39b; }
 .touch-controls { display: none; }
 .keyboard-help { display: flex; flex-wrap: wrap; gap: 13px; min-height: 39px; padding: 6px 12px; align-items: center; justify-content: center; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
 .keyboard-help span { display: flex; gap: 4px; align-items: center; white-space: nowrap; }
 kbd { display: inline-block; min-width: 17px; padding: 1px 4px; border: 1px solid #684833; border-radius: 2px; background: #100b0755; color: var(--ink); text-align: center; font: 600 12px var(--cond); }
 .footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; padding: 14px 0 22px; color: #be9980; }
 .track { display: flex; align-items: center; gap: 6px; }
-.track span:not(.record) { color: var(--muted); }
+.track-title { color: var(--muted); }
 .record { width: 14px; height: 14px; border-radius: 50%; border: 1px solid #a46743; background: radial-gradient(circle, #e97421 0 18%, #1d130c 19% 31%, #7f553b 32% 40%, #1d130c 41% 58%, #845a40 59% 67%, #1d130c 68%); }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 
@@ -152,6 +183,8 @@ kbd { display: inline-block; min-width: 17px; padding: 1px 4px; border: 1px soli
   .side { grid-template-columns: 1.15fr 1fr; align-items: start; gap: 8px; }
   .rig-card { grid-row: span 2; }
   .fx-buttons { grid-template-columns: 1fr; }
+  .preamp-band { min-height: 68px; }
+  .track-title { font-size: 10px; letter-spacing: .06em; }
 }
 @media (max-width: 350px) {
   .board-meters .combo { display: none; }

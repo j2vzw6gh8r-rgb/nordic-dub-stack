@@ -1,9 +1,36 @@
 const Sound = (() => {
   const track = document.getElementById('dub-track');
-  track.volume = 0.59;
+  const bandNames = ['bass', 'kick', 'mid', 'high'];
+  const bandGains = Object.create(null);
+  const bandStates = { bass: true, kick: false, mid: false, high: false };
+  track.volume = 0.92;
   let ctx;
   let master;
   let lastManual = -Infinity;
+
+  function makeBand(source, name, low, high, musicBus) {
+    let input = source;
+    if (low) {
+      const highpass = ctx.createBiquadFilter();
+      highpass.type = 'highpass';
+      highpass.frequency.value = low;
+      highpass.Q.value = 0.707;
+      input.connect(highpass);
+      input = highpass;
+    }
+    if (high) {
+      const lowpass = ctx.createBiquadFilter();
+      lowpass.type = 'lowpass';
+      lowpass.frequency.value = high;
+      lowpass.Q.value = 0.707;
+      input.connect(lowpass);
+      input = lowpass;
+    }
+    const gain = ctx.createGain();
+    gain.gain.value = bandStates[name] ? 0.83 : 0;
+    input.connect(gain).connect(musicBus);
+    bandGains[name] = gain;
+  }
 
   function unlock() {
     try {
@@ -17,6 +44,15 @@ const Sound = (() => {
         compressor.ratio.value = 5;
         compressor.connect(master).connect(ctx.destination);
         master.input = compressor;
+
+        const musicBus = ctx.createGain();
+        musicBus.gain.value = 0.64;
+        musicBus.connect(ctx.destination);
+        const source = ctx.createMediaElementSource(track);
+        makeBand(source, 'bass', 30, 100, musicBus);
+        makeBand(source, 'kick', 100, 200, musicBus);
+        makeBand(source, 'mid', 200, 5000, musicBus);
+        makeBand(source, 'high', 5000, 0, musicBus);
       }
       if (ctx?.state === 'suspended') ctx.resume().catch(() => {});
     } catch {
@@ -30,7 +66,22 @@ const Sound = (() => {
   }
 
   function setEffects(on) {
-    if (master) master.gain.setTargetAtTime(on ? 0.55 : 0, ctx.currentTime, 0.015);
+    if (master && ctx) master.gain.setTargetAtTime(on ? 0.55 : 0, ctx.currentTime, 0.015);
+  }
+
+  function resetBands() {
+    bandNames.forEach((name, index) => {
+      bandStates[name] = index === 0;
+      const gain = bandGains[name];
+      if (gain && ctx) gain.gain.setTargetAtTime(index === 0 ? 0.83 : 0, ctx.currentTime, 0.32);
+    });
+  }
+
+  function activateBand(name) {
+    if (!bandNames.includes(name)) return;
+    bandStates[name] = true;
+    const gain = bandGains[name];
+    if (gain && ctx) gain.gain.setTargetAtTime(0.83, ctx.currentTime, 0.48);
   }
 
   function tone({ from, to = from, type, at, duration, volume, end, wobble = 0, repeats = false }) {
@@ -67,7 +118,6 @@ const Sound = (() => {
       envelope.connect(delay).connect(feedback);
       feedback.connect(delay);
       feedback.connect(master.input);
-      // Tear down the feedback loop after the tail has decayed.
       osc.addEventListener('ended', () => setTimeout(() => {
         delay.disconnect();
         feedback.disconnect();
@@ -102,5 +152,5 @@ const Sound = (() => {
     }
   }
 
-  return { unlock, music, setEffects, play };
+  return { unlock, music, setEffects, play, resetBands, activateBand };
 })();

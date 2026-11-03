@@ -9,7 +9,7 @@
   const artwork = new Image();
   const number = new Intl.NumberFormat('en-GB');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const storageKey = 'nordic-dub-stack.best.v2';
+  const storageKey = 'nordic-dub-stack.best.v2.2';
   const actions = {
     ready: 'String up the sound',
     paused: 'Back to the session',
@@ -306,6 +306,50 @@
     Sound.music(musicOn && ['playing', 'complete', 'lost'].includes(game.mode));
   }
 
+  const bandInfo = {
+    bass: { title: 'Bass section', range: '30–100 Hz' },
+    kick: { title: 'Kick section', range: '100–200 Hz' },
+    mid: { title: 'Mid section', range: '200 Hz–5 kHz' },
+    high: { title: 'High section', range: '5 kHz+' },
+  };
+  let currentBand = 'bass';
+  const preampBands = [...document.querySelectorAll('.preamp-band')];
+
+  function paintPreamp() {
+    preampBands.forEach(element => {
+      const name = element.dataset.band;
+      element.classList.toggle('active', name === 'bass' || game._activeBands?.includes(name));
+      element.classList.toggle('current', name === currentBand);
+    });
+    const info = bandInfo[currentBand];
+    $('preamp-status').textContent = game.mode === 'playing' ? `${info.title} live` : 'Soundcheck';
+    $('preamp-readout').textContent = `${info.title} · ${info.range}`;
+  }
+
+  function resetPreamp() {
+    game._activeBands = ['bass'];
+    currentBand = 'bass';
+    Sound.resetBands();
+    paintPreamp();
+  }
+
+  function bandForPiece(piece, tier) {
+    const kind = piece.kind.toLowerCase();
+    if (/scoop|sub|bass/.test(kind)) return 'bass';
+    if (/kick/.test(kind)) return 'kick';
+    if (/mid/.test(kind)) return 'mid';
+    if (/tweeter|top|horn|crest/.test(kind)) return 'high';
+    return tier === 0 ? 'bass' : tier === 1 ? 'kick' : tier === 2 ? 'mid' : 'high';
+  }
+
+  function activatePreamp(piece, tier) {
+    currentBand = bandForPiece(piece, tier);
+    game._activeBands ||= ['bass'];
+    if (!game._activeBands.includes(currentBand)) game._activeBands.push(currentBand);
+    Sound.activateBand(currentBand);
+    paintPreamp();
+  }
+
   function togglePause() {
     if (game.mode !== 'playing' && game.mode !== 'paused') return;
     stopRepeating();
@@ -333,6 +377,7 @@
   function handleResult(result, piece, tier) {
     if (!result) return;
     const { type, x, y, points } = result;
+    if (type === 'hit' || type === 'row' || type === 'complete') activatePreamp(piece, tier);
     burst(x, y, type, piece, tier);
     updateHUD();
     if (type === 'complete') {
@@ -426,6 +471,7 @@
     }
     if (game.mode === 'complete') game.nextRig();
     else game.start();
+    resetPreamp();
     lastDrop = performance.now();
     particles = [];
     feedback();
@@ -442,6 +488,7 @@
   $('music').addEventListener('click', event => {
     musicOn = !musicOn;
     $('music').setAttribute('aria-pressed', musicOn);
+    if (musicOn) Sound.unlock();
     if (musicOn && game.mode === 'ready') Sound.music(true);
     else updateMusic();
     returnToBoard(event);
@@ -488,6 +535,7 @@
     dirty = true;
   });
   artwork.src = './assets/nordic-speakers.png';
+  resetPreamp();
   updateHUD();
   renderAction();
   requestAnimationFrame(frame);
